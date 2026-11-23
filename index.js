@@ -18,6 +18,13 @@ function readJson(req) {
 }
 
 const server = http.createServer(async (req, res) => {
+  if (req.url === '/about') {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('About Page\n');
+    return;
+  }
+
   if (req.url === '/health') {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ status: 'ok' }));
