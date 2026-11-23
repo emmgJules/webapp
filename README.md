@@ -10,3 +10,5 @@ node index.js   # visit http://localhost:3000
 ## Routes
 
 - `GET /` - greeting
+- `GET /health` - health check
+- `POST /login` - JSON {username, password}
