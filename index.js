@@ -18,6 +18,12 @@ function readJson(req) {
 }
 
 const server = http.createServer(async (req, res) => {
+  if (req.url === '/health') {
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ status: 'ok' }));
+    return;
+  }
+
   if (req.method === 'POST' && req.url === '/login') {
     const { username, password } = await readJson(req);
     const ok = authenticate(username, password);
