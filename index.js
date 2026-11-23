@@ -29,7 +29,7 @@ const server = http.createServer(async (req, res) => {
 
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello, this is a basic web app!\n');
+  res.end('Hello from the main branch web app!\n');
 });
 
 server.listen(PORT, () => {
