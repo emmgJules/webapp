@@ -1,8 +1,32 @@
 const http = require('http');
+const { authenticate } = require('./auth');
 
 const PORT = process.env.PORT || 3000;
 
-const server = http.createServer((req, res) => {
+function readJson(req) {
+  return new Promise((resolve) => {
+    let body = '';
+    req.on('data', (chunk) => (body += chunk));
+    req.on('end', () => {
+      try {
+        resolve(JSON.parse(body || '{}'));
+      } catch {
+        resolve({});
+      }
+    });
+  });
+}
+
+const server = http.createServer(async (req, res) => {
+  if (req.method === 'POST' && req.url === '/login') {
+    const { username, password } = await readJson(req);
+    const ok = authenticate(username, password);
+    res.statusCode = ok ? 200 : 401;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(ok ? { message: `Welcome, ${username}!` } : { error: 'Invalid credentials' }));
+    return;
+  }
+
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.end('Hello, this is a basic web app!\n');
